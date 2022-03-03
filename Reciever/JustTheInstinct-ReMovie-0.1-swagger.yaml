@@ -1,0 +1,105 @@
+openapi: 3.0.0
+info:
+  version: '0.1'
+  title: ReMovie API
+  description: A place to create reviews and react to them
+tags: 
+  - name: devices
+    description: Used to create objects
+# resource:
+#   - /create - GET
+#             - POST
+#             - PUT
+#   - /display - GET
+#             - POST
+#   - /rate - GET
+#           - POST
+#           - PUT
+paths:
+  /create:
+    post:
+      tags: 
+        - devices
+      summary: matches password with a service
+      operationId: app.create_review
+      description: Creates a new password linked to another service to the system
+      responses:
+        '201':
+          description: review created
+        '400':
+          description: 'invalid arguments'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddReview'
+        description: Reads item to add
+        
+  /rate:
+    post:
+      tags: 
+        - devices
+      summary: allows users to rate other reviews
+      operationId: app.rate
+      description: creates ratings
+      responses:
+        '201':
+          description: rating created
+        '400':
+          description: 'invalid arguments'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddRate'
+        description: Reads item to add
+
+components:
+  schemas:
+    AddReview:
+      required: 
+        - review_id
+        - username
+        - comment
+        - rating
+        - timestamp
+      properties:
+        review_id:
+          type: string
+          example: R012345
+        username:
+          type: string
+          example: Waluigi
+        comment:
+          type: string
+          example: This movie is good
+        rating:
+          type: integer
+          example: 89
+        timestamp:
+          type: string
+          format: date-time
+          example: '2022-01-01'
+      type: object
+    
+    AddRate:
+      required:
+        - response_id
+        - user_rating
+        - rate_count
+        - timestamp
+      properties:
+        response_id:
+          type: string
+          example: B012345
+        user_rating:
+          type: boolean
+          example: True
+        rate_count:
+          type: integer
+          example: 21
+        timestamp:
+          type: string
+          format: date-time
+          example: '2022-01-01'
+      type: object

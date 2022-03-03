@@ -1,0 +1,131 @@
+openapi: 3.0.0
+info:
+  description: Audit info
+  version: '1.0.0'
+  title: Audit API
+  contact:
+    email: jordangmain@gmail.com
+
+paths:
+  /create:
+    get:
+      summary: gets review from history
+      operationId: app.get_review
+      description: gets events from event store
+      parameters:
+        - name: index
+          in: query
+          description: Gets review with index
+          schema:
+            type: integer
+            example: 20
+      responses:
+        '200':
+          description: sucessful get
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/Ratings'
+        '400':
+          description: Invalid request 
+          content: 
+            application/json: 
+              schema: 
+                type: object 
+                properties: 
+                  message: 
+                    type: string
+        '404': 
+          description: Not Found 
+          content: 
+            application/json: 
+              schema: 
+                type: object 
+                properties: 
+                  message: 
+                    type: string 
+
+  /rate:
+    get: 
+      summary: gets rating from history
+      operationId: app.get_rating
+      description: Gets events from store
+      parameters: 
+        - name: index 
+          in: query 
+          description: Gets rating with index 
+          schema: 
+            type: integer 
+            example: 22 
+      responses: 
+        '200': 
+          description: returned a rate event 
+          content: 
+            application/json: 
+              schema: 
+                type: object 
+                items: 
+                  $ref: '#/components/schemas/Rate' 
+        '400': 
+          description: Invalid request 
+          content: 
+            application/json: 
+              schema: 
+                type: object 
+                properties: 
+                  message: 
+                    type: string 
+        '404': 
+          description: Not Found
+
+components: 
+  schemas: 
+    Ratings:  
+      required: 
+        - review_id
+        - username
+        - comment
+        - rating
+        - timestamp
+      properties:
+        review_id:
+          type: string
+          example: R012345
+        username:
+          type: string
+          example: Waluigi
+        comment:
+          type: string
+          example: This movie is good
+        rating:
+          type: integer
+          example: 89
+        timestamp:
+          type: string
+          format: date-time
+          example: '2022-01-01'
+      type: object
+ 
+    Rate: 
+      required:
+        - response_id
+        - user_rating
+        - rate_count
+        - timestamp
+      properties:
+        response_id:
+          type: string
+          example: B012345
+        user_rating:
+          type: boolean
+          example: True
+        rate_count:
+          type: integer
+          example: 21
+        timestamp:
+          type: string
+          format: date-time
+          example: '2022-01-01'
+      type: object 

@@ -1,0 +1,50 @@
+openapi: 3.0.0
+info:
+  description: event stats
+  version: '0.1'
+  title: ReMovie API
+
+paths:
+  /stats:
+    get:
+      summary: event stats
+      operationId: app.get_stats
+      description: gets review and rating stats
+      responses:
+        '200':
+          description: stats generated
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/ReviewStats'
+        '400':
+          description: 'invalid request'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+
+components:
+  schemas:
+    ReviewStats:
+      required: 
+        - num_of_ratings
+        - num_positive
+        - num_negative
+      properties:
+        num_of_ratings:
+          type: integer
+          example: 100
+        num_positive:
+          type: integer
+          example: 80
+        num_negative:
+          type: integer
+          example: 20
+      type: object
+    

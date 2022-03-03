@@ -1,0 +1,9 @@
+version: 0.1
+eventstore1: 
+  url: http://localhost:8090/create
+eventstore2: 
+  url: http://localhost:8090/rate
+events:
+  hostname: kafka1.eastus2.cloudapp.azure.com
+  port: 9092
+  topic: events

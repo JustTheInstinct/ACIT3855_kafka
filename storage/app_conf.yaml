@@ -1,0 +1,10 @@
+version: 0.1
+datastore: 
+  user: user 
+  password: password
+  hostname: kafka1.eastus2.cloudapp.azure.com
+  port: 3306
+events: 
+  hostname: kafka1.eastus2.cloudapp.azure.com
+  port: 9092 
+  topic: events
