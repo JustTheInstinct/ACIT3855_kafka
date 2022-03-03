@@ -42,7 +42,36 @@ services:
       - '3306' 
       # Where our data will be persisted 
     volumes: 
-      - my-db:/var/lib/mysql 
+      - my-db:/var/lib/mysql
+
+  receiver: 
+    image: receiver 
+    ports: 
+      - “8080:8080” 
+    depends_on: 
+      - “kafka”
+
+  processing: 
+    image: processing 
+    network_mode: "http://localhost:8090"
+    ports: 
+      - “8100:8100” 
+    depends_on: 
+      - “storage”
+
+  storage: 
+    image: receiver 
+    ports: 
+      - “8090:8090” 
+    depends_on: 
+      - “kafka”
+
+  audit_log: 
+    image: receiver 
+    ports: 
+      - “8110:8110” 
+    depends_on: 
+      - “kafka”
 # Names our volume 
 volumes: 
   my-db:
