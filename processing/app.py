@@ -1,4 +1,4 @@
-import yaml, json, connexion, logging.config, logging, sys, swagger_ui_bundle, requests, apscheduler_bundle, sqlalchemy#, drop_tables
+import yaml, json, connexion, logging.config, logging, sys, swagger_ui_bundle, requests, sqlalchemy#, drop_tables
 #import create_tables
 
 from base import BASE
