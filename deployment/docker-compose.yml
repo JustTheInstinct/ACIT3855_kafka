@@ -47,31 +47,31 @@ services:
   receiver: 
     image: receiver 
     ports: 
-      - “8080:8080” 
+      - "8080:8080" 
     depends_on: 
-      - “kafka”
+      - "kafka"
 
   processing: 
     image: processing 
     network_mode: "http://localhost:8090"
     ports: 
-      - “8100:8100” 
+      - "8100:8100" 
     depends_on: 
-      - “storage”
+      - "storage"
 
   storage: 
     image: receiver 
     ports: 
-      - “8090:8090” 
+      - "8090:8090" 
     depends_on: 
-      - “kafka”
+      - "kafka"
 
   audit_log: 
     image: receiver 
     ports: 
-      - “8110:8110” 
+      - "8110:8110"
     depends_on: 
-      - “kafka”
+      - "kafka"
 # Names our volume 
 volumes: 
   my-db:
