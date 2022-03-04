@@ -88,4 +88,4 @@ if __name__ == "__main__":
     with open('app_conf.yaml', 'r') as f:
         app_conf = yaml.safe_load(f.read())
 
-    app.run(port=9092)
+    app.run(port=8110)
