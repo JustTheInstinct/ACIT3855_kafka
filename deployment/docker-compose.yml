@@ -51,18 +51,18 @@ services:
     depends_on: 
       - "kafka"
 
-  processing: 
-    image: processing 
-    network_mode: host
-    depends_on: 
-      - "storage"
-
   storage: 
     image: storage 
     ports: 
       - "8090:8090" 
     depends_on: 
       - "kafka"
+       
+  processing: 
+    image: processing 
+    network_mode: host
+    depends_on: 
+      - "storage"
 
   audit_log: 
     image: audit_log 
