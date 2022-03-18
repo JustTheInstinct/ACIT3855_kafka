@@ -1,17 +1,16 @@
-from httpx import request
-import yaml, json, connexion, logging.config, logging, sys, swagger_ui_bundle, requests, apscheduler_bundle, sqlalchemy#, drop_tables
+import yaml, json, connexion, logging.config, logging, sys, swagger_ui_bundle, requests#, drop_tables
 #import create_tables
 
 from base import BASE
 from stats import Stats
 
 from random import randint
-from datetime import datetime
-from connexion import NoContent
-from logging.config import dictConfig
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
+from datetime import datetime
+from connexion import NoContent
+from logging.config import dictConfig
 from apscheduler.schedulers.background import BackgroundScheduler
 
 

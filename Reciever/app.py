@@ -6,9 +6,6 @@ from random import randint
 from datetime import datetime
 from connexion import NoContent
 from logging.config import dictConfig
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.ext.declarative import declarative_base
 from pykafka import KafkaClient
 
 with open('app_conf.yaml', 'r') as f:
