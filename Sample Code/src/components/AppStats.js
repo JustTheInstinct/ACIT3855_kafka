@@ -8,7 +8,7 @@ export default function AppStats() {
 
 	const getStats = () => {
 	
-        fetch(`http://<Cloud DNS>:8100/stats`)
+        fetch(`http://kafka1.eastus2.cloudapp.azure.com:8100/stats`)
             .then(res => res.json())
             .then((result)=>{
 				console.log("Received Stats")
@@ -39,10 +39,10 @@ export default function AppStats() {
 							<th>Heart Rate</th>
 						</tr>
 						<tr>
-							<td># BP: {stats['num_bp_readings']}</td>
-							<td># HR: {stats['num_hr_readings']}</td>
+							<td># BP: {stats['review']}</td>
+							<td># HR: {stats['rating']}</td>
 						</tr>
-						<tr>
+						{/* <tr>
 							<td colspan="2">Max BP Systolic: {stats['max_bp_sys_reading']}</td>
 						</tr>
 						<tr>
@@ -50,7 +50,7 @@ export default function AppStats() {
 						</tr>
 						<tr>
 							<td colspan="2">Max HR: {stats['max_bp_sys_reading']}</td>
-						</tr>
+						</tr> */}
 					</tbody>
                 </table>
                 <h3>Last Updated: {stats['last_updated']}</h3>
