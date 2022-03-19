@@ -4,6 +4,7 @@ import '../App.css';
 export default function EndpointAudit(props) {
     const [isLoaded, setIsLoaded] = useState(false);
     const [log, setLog] = useState(null);
+    const [index, setIndex] = useState(null);
     const [error, setError] = useState(null)
 	const rand_val = Math.floor(Math.random() * 100); // Get a random event from the event store
 
@@ -19,6 +20,7 @@ export default function EndpointAudit(props) {
                 setIsLoaded(true);
             })
     }
+    setIndex(rand_val);
 	useEffect(() => {
 		const interval = setInterval(() => getAudit(), 4000); // Update every 4 seconds
 		return() => clearInterval(interval);
@@ -32,7 +34,7 @@ export default function EndpointAudit(props) {
         
         return (
             <div>
-                <h3>{props.endpoint}-{rand_val}</h3>
+                <h3>{props.endpoint}-{index}</h3>
                 {JSON.stringify(log)}
             </div>
         )
