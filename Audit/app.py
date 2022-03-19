@@ -3,6 +3,7 @@ from distutils.log import error
 import yaml, json, connexion, logging.config, logging, sys, pykafka, logging
 
 from random import randint
+from flask_cors import CORS, cross_origin
 from datetime import datetime
 from connexion import NoContent
 from logging.config import dictConfig
@@ -19,7 +20,6 @@ with open('app_conf.yaml', 'r') as f:
 with open('log_conf.yaml', 'r') as f:
     log_config = yaml.safe_load(f.read())
     logging.config.dictConfig(log_config)
-
 
 def get_review(index=0):
     counter_review = 0
@@ -77,6 +77,8 @@ def get_rating(index=0):
     return {"message": "Not Found"}, 404
 
 app = connexion.FlaskApp(__name__, specification_dir='')
+CORS(app.app)
+app.app.config['CORS_HEADERS'] = 'Content-Type'
 
 app.add_api("openapi.yaml", strict_validation=True, validate_responses=True)
 

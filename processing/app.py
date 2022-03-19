@@ -1,10 +1,11 @@
-import yaml, json, connexion, logging.config, logging, sys, swagger_ui_bundle, requests#, drop_tables
+import yaml, json, connexion, logging.config, logging, sys, swagger_ui_bundle, requests, flask_cors#, drop_tables
 #import create_tables
 
 from base import BASE
 from stats import Stats
 
 from random import randint
+from flask_cors import CORS, cross_origin
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
@@ -88,6 +89,8 @@ def get_stats():
     return NoContent, 201
 
 app = connexion.FlaskApp(__name__, specification_dir='')
+CORS(app.app)
+app.app.config['CORS_HEADERS'] = 'Content-Type'
 
 app.add_api("JustTheInstinct-ReMovie-0.1-swagger.yaml", strict_validation=True, validate_responses=True)
 
