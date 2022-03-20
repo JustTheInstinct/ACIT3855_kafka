@@ -87,6 +87,6 @@ services:
       - "audit_log"
 # Names our volume 
 volumes:
-  /var/run/docker.sock:
-  /home/azureuser/kafka:
-  /home/azureuser/zookeeper/data:
+  docker.sock:
+  kafka:
+  data:
