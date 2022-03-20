@@ -90,3 +90,4 @@ volumes:
   docker.sock:
   kafka:
   data:
+  events:
