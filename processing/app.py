@@ -82,11 +82,14 @@ def init_scheduler():
 def get_stats():
     session = SESSION()
     
-    session.query(Stats).order_by(Stats.timestamp.desc())
+    try:
+        stats = session.query(Stats).order_by(Stats.timestamp.desc()).first()
+    except:
+        return NoContent, 400
 
     session.close()
 
-    return NoContent, 201
+    return stats.to_dict(), 201
 
 app = connexion.FlaskApp(__name__, specification_dir='')
 CORS(app.app)
