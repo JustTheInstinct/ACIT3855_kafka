@@ -47,7 +47,7 @@ def populate_stats():
     num_positive = randint(0,num_of_ratings)
     num_negative = num_of_ratings - num_positive
 
-    data = requests.get('http://localhost:8090/create', params={'timestamp':"1999-02-20"})
+    data = requests.get('http://kafka1.eastus2.cloudapp.azure.com:8090/create', params={'timestamp':"1999-02-20"})
     if data.ok:
         logger.info(f"{data} received on reviews")
     else:
