@@ -51,7 +51,7 @@ def populate_stats():
     if data.ok:
         logger.info(f"{data} received on reviews")
     else:
-        logger.error(f"{data2} received on rate")
+        logger.error(f"{data} received on rate")
         return 404
 
     data2 = requests.get('http://localhost:8090/rate', params={'timestamp':"1999-02-20"})
