@@ -13,6 +13,7 @@ export default function EndpointAudit(props) {
             .then(res => res.json())
             .then((result)=>{
 				console.log("Received Audit Results for " + props.endpoint)
+                setIndex(rand_val);
                 setLog(result);
                 setIsLoaded(true);
             },(error) =>{
@@ -20,11 +21,11 @@ export default function EndpointAudit(props) {
                 setIsLoaded(true);
             })
     }
-    setIndex(rand_val);
+    
 	useEffect(() => {
 		const interval = setInterval(() => getAudit(), 4000); // Update every 4 seconds
 		return() => clearInterval(interval);
-    }, [getAudit]);
+    },[getAudit]);
 
     if (error){
         return (<div className={"error"}>Error found when fetching from API</div>)
