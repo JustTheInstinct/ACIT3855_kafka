@@ -39,8 +39,8 @@ export default function AppStats() {
 							<th>Heart Rate</th>
 						</tr>
 						<tr>
-							<td># BP: {stats['review']}</td>
-							<td># HR: {stats['rating']}</td>
+							<td># Reviews: {stats['review']}</td>
+							<td># Ratings: {stats['rating']}</td>
 						</tr>
 						{/* <tr>
 							<td colspan="2">Max BP Systolic: {stats['max_bp_sys_reading']}</td>
