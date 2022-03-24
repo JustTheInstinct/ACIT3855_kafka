@@ -1,6 +1,6 @@
 #from httpx import request
 import yaml, json, connexion, logging.config, logging, sys, pykafka#, drop_tables_mysql
-#import create_database_mysql
+import create_database_mysql
 
 from base import BASE
 from reviews import Review
@@ -26,7 +26,7 @@ logger.setLevel(logging.DEBUG)
 
 
 #drop_tables_mysql
-#create_database_mysql
+create_database_mysql
 
 SESSION = sessionmaker(bind=ENGINE)
 
