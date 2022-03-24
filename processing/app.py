@@ -54,7 +54,7 @@ def populate_stats():
         logger.error(f"{data} received on rate")
         return 404
 
-    data2 = requests.get('http://localhost:8090/rate', params={'timestamp':"1999-02-20"})
+    data2 = requests.get('http://kafka1.eastus2.cloudapp.azure.com:8090/rate', params={'timestamp':"1999-02-20"})
     if data.ok:
         logger.info(f"{data2} received on rate")
     else:
