@@ -1,6 +1,6 @@
 from asyncio import events
 from email.mime import base
-import json, string, connexion, yaml, logging.config, logging, requests, sys, datetime, pykafka, time
+import json, string, connexion, yaml, logging.config, logging, requests, sys, datetime, pykafka, time, os
 
 from time import sleep
 from random import randint
@@ -8,6 +8,24 @@ from datetime import datetime
 from connexion import NoContent
 from logging.config import dictConfig
 from pykafka import KafkaClient
+
+if "TARGET_ENV" in os.environ and os.environ["TARGET_ENV"] == "test":
+    print("In Test Environment")
+    app_conf_file = "/config/app_conf.yml"
+    log_conf_file = "/config/log_conf.yml"
+else:
+    print("In Dev Environment")
+    app_conf_file = "app_conf.yml"
+    log_conf_file = "log_conf.yml"
+with open(app_conf_file, 'r') as f:
+    app_config = yaml.safe_load(f.read())
+# External Logging Configuration
+with open('log_conf_file', 'r') as f:
+    log_config = yaml.safe_load(f.read())
+    logging.config.dictConfig(log_config)
+    logger = logging.getLogger('basicLogger')
+    logger.info("App Conf File: %s" % app_conf_file)
+    logger.info("Log Conf File: %s" % log_conf_file)
 
 with open('app_conf.yaml', 'r') as f:
     app_config = yaml.safe_load(f.read())
