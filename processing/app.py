@@ -1,4 +1,4 @@
-import yaml, json, connexion, logging.config, logging, sys, swagger_ui_bundle, requests, flask_cors, os#, drop_tables
+import yaml, json, connexion, logging.config, logging, sys, swagger_ui_bundle, requests, flask_cors, os, sqlite3#, drop_tables
 #import create_tables
 
 from base import BASE
@@ -14,6 +14,8 @@ from connexion import NoContent
 from logging.config import dictConfig
 from apscheduler.schedulers.background import BackgroundScheduler
 
+
+
 if "TARGET_ENV" in os.environ and os.environ["TARGET_ENV"] == "test":
     print("In Test Environment")
     app_conf_file = "/config/processing/app_conf.yaml"
@@ -23,14 +25,36 @@ else:
     app_conf_file = "app_conf.yaml"
     log_conf_file = "log_conf.yaml"
 
-#drop_tables
-#if not create_tables:
-#    create_tables
-if not os.path.exists('data'):
-    os.makedirs('data')
-
-with open('app_conf.yaml', 'r') as f:
+with open(app_conf_file, 'r') as f:
     app_config = yaml.safe_load(f.read())
+
+with open(log_conf_file, 'r') as f:
+    log_config = yaml.safe_load(f.read())
+    logging.config.dictConfig(log_config)
+
+logger = logging.getLogger('basicLogger')
+logger.setLevel(logging.DEBUG)
+
+
+if not os.isfile(app_config["datastore"]["filename"]):
+    # code for creating the database
+    connection = sqlite3.connect(app_config["datastore"]["filename"])
+    c = connection.cursor()
+
+    c.execute("""
+                CREATE TABLE stats
+                (
+                id INTEGER PRIMARY KEY ASC NOT NULL,
+                num_of_ratings INTEGER NOT NULL,
+                num_positive INTEGER,
+                num_negative INTEGER,
+                timestamp VARCHAR(100) NOT NULL,
+                trace_id INTEGER
+                )
+            """)
+
+    connection.commit()
+    connection.close()
 
 ENGINE = create_engine("sqlite:///%s" % app_config["datastore"]["filename"])
 BASE.metadata.bind = ENGINE
@@ -110,12 +134,6 @@ app.add_api("JustTheInstinct-ReMovie-0.1-swagger.yaml", strict_validation=True, 
 if __name__ == "__main__":
 
     # Load log config
-    with open('log_conf.yaml', 'r') as f:
-        log_config = yaml.safe_load(f.read())
-        logging.config.dictConfig(log_config)
-
-    logger = logging.getLogger('basicLogger')
-    logger.setLevel(logging.DEBUG)
-
+    
     init_scheduler()
     app.run(port=8100, use_reloader=False)

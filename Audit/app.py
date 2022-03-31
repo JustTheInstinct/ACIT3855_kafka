@@ -1,6 +1,6 @@
 from cgitb import reset
 from distutils.log import error
-import yaml, json, connexion, logging.config, logging, sys, pykafka, logging
+import yaml, json, connexion, logging.config, logging, sys, pykafka, logging, os
 
 from random import randint
 from flask_cors import CORS, cross_origin
@@ -13,8 +13,8 @@ from threading import Thread
 
 if "TARGET_ENV" in os.environ and os.environ["TARGET_ENV"] == "test":
     print("In Test Environment")
-    app_conf_file = "/config/audit_log/app_conf.yaml"
-    log_conf_file = "/config/audit_log/log_conf.yaml"
+    app_conf_file = "/config/app_conf.yaml"
+    log_conf_file = "/config/log_conf.yaml"
 else:
     print("In Dev Environment")
     app_conf_file = "app_conf.yaml"
@@ -23,10 +23,10 @@ else:
 logger = logging.getLogger('basicLogger')
 logger.setLevel(logging.INFO)
 
-with open('app_conf.yaml', 'r') as f:
+with open(app_conf_file, 'r') as f:
     app_conf = yaml.safe_load(f.read())
 
-with open('log_conf.yaml', 'r') as f:
+with open(log_conf_file, 'r') as f:
     log_config = yaml.safe_load(f.read())
     logging.config.dictConfig(log_config)
 
