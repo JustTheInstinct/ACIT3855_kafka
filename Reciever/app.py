@@ -1,7 +1,8 @@
 from asyncio import events
 from email.mime import base
-import json, string, connexion, yaml, logging.config, logging, requests, sys, datetime, pykafka
+import json, string, connexion, yaml, logging.config, logging, requests, sys, datetime, pykafka, time
 
+from time import sleep
 from random import randint
 from datetime import datetime
 from connexion import NoContent
@@ -27,8 +28,9 @@ def create_review(body):
     trace_id = randint(0,sys.maxsize)
     body['trace_id'] = trace_id
 
-    client = KafkaClient(hosts='kafka1.eastus2.cloudapp.azure.com:9092')
-    topic = client.topics[str.encode(app_config['events']['topic'])]
+    topic = retry()
+    # client = KafkaClient(hosts='kafka1.eastus2.cloudapp.azure.com:9092')
+    # topic = client.topics[str.encode(app_config['events']['topic'])]
     producer = topic.get_sync_producer()
 
     msg = { "type": "review",  
@@ -48,8 +50,9 @@ def rate(body):
     trace_id = randint(0,sys.maxsize)
     body['trace_id'] = trace_id
 
-    client = KafkaClient(hosts='kafka1.eastus2.cloudapp.azure.com:9092')
-    topic = client.topics[str.encode(app_config['events']['topic'])]
+    topic = retry()
+    # client = KafkaClient(hosts='kafka1.eastus2.cloudapp.azure.com:9092')
+    # topic = client.topics[str.encode(app_config['events']['topic'])]
     producer = topic.get_sync_producer()
 
     msg = { "type": "rating",  
@@ -64,6 +67,25 @@ def rate(body):
     #value = requests.post('http://localhost:8090/rate',json=body, headers={"Content-Type":"application/json"})
 
     return NoContent, 200
+
+def retry():
+    '''Attempts to reconnect to Database'''
+    retry_num = 1
+    max_retry = app_config['retries']['max']
+    while retry_num <= max_retry:
+        
+        logger.info(f"Attempting to connect: {retry_num} out of {max_retry} retries")
+        
+        try:
+            hostname = "%s:%d" % (app_config["events"]["hostname"],   
+                                app_config["events"]["port"]) 
+            client = KafkaClient(hosts=hostname)
+            topic = client.topics[str.encode(app_config["events"]["topic"])]
+        except:
+            logger.error("Connection Terminated. Retrying...")
+            time.sleep(app_config['retries']['sleep'])
+        retry_num += 1
+    return topic
 
 app = connexion.FlaskApp(__name__, specification_dir='')
 

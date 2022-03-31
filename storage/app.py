@@ -1,12 +1,14 @@
 #from httpx import request
 from operator import and_
-import yaml, json, connexion, logging.config, logging, sys, pykafka#, drop_tables_mysql
+from time import time
+import yaml, json, connexion, logging.config, logging, sys, pykafka, time#, drop_tables_mysql
 #import create_database_mysql
 
 from base import BASE
 from reviews import Review
 from rating import Rating
 
+from time import sleep
 from random import randint
 from sqlalchemy import create_engine, and_
 from sqlalchemy.orm import sessionmaker
@@ -112,10 +114,11 @@ def process_messages():
     rate
     
 
-    hostname = "%s:%d" % (app_config["events"]["hostname"],   
-                          app_config["events"]["port"]) 
-    client = KafkaClient(hosts=hostname) 
-    topic = client.topics[str.encode(app_config["events"]["topic"])] 
+    # hostname = "%s:%d" % (app_config["events"]["hostname"],   
+    #                       app_config["events"]["port"]) 
+    topic = retry()
+    # client = KafkaClient(hosts=hostname) 
+    # topic = client.topics[str.encode(app_config["events"]["topic"])] 
      
     consumer = topic.get_simple_consumer(consumer_group=b'event_group', 
                                          reset_offset_on_start=False, 
@@ -138,6 +141,25 @@ def process_messages():
  
         # Commit the new message as being read 
         consumer.commit_offsets() 
+
+def retry():
+    '''Attempts to reconnect to Database'''
+    retry_num = 1
+    max_retry = app_config['retries']['max']
+    while retry_num <= max_retry:
+        
+        logger.info(f"Attempting to connect: {retry_num} out of {max_retry} retries")
+        
+        try:
+            hostname = "%s:%d" % (app_config["events"]["hostname"],   
+                                app_config["events"]["port"]) 
+            client = KafkaClient(hosts=hostname)
+            topic = client.topics[str.encode(app_config["events"]["topic"])]
+        except:
+            logger.error("Connection Terminated. Retrying...")
+            time.sleep(app_config['retries']['sleep'])
+        retry_num += 1
+    return topic
 
 app = connexion.FlaskApp(__name__, specification_dir='')
 

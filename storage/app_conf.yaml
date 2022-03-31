@@ -8,3 +8,6 @@ events:
   hostname: kafka1.eastus2.cloudapp.azure.com
   port: 9092 
   topic: events
+retries:
+  max: 9
+  sleep: 3
