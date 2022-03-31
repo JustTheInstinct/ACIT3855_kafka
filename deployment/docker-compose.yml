@@ -58,6 +58,7 @@ services:
       - "8080:8080"
     volumes:
       - /home/azureuser/config/receiver:/config
+      - /home/azureuser/logs:/logs
     depends_on: 
       - "kafka"
 
@@ -66,6 +67,8 @@ services:
     image: storage 
     ports: 
       - "8090:8090" 
+    volumes:
+      - /home/azureuser/logs:/logs
     depends_on: 
       - "kafka"
        
@@ -76,6 +79,7 @@ services:
       - "storage"
     volumes:
       - my-db:/var/lib/sqlite
+      - /home/azureuser/logs:/logs
 
   audit_log: 
     image: audit_log 
@@ -83,6 +87,8 @@ services:
       - "8110:8110"
     depends_on: 
       - "kafka"
+    volumes:
+      - /home/azureuser/logs:/logs
 
   dashboard: 
     image: dashboard 
