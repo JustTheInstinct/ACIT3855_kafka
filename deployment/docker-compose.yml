@@ -50,12 +50,17 @@ services:
     volumes: 
       - my-db:/var/lib/mysql
 
-  receiver: 
+  receiver:
+    environment:
+      - TARGET_ENV=test
     image: receiver 
     ports: 
-      - "8080:8080" 
+      - "8080:8080"
+    volumes:
+      - /home/azureuser/config/receiver:/config
     depends_on: 
       - "kafka"
+
 
   storage: 
     image: storage 
