@@ -1,5 +1,5 @@
 import yaml, json, connexion, logging.config, logging, sys, swagger_ui_bundle, requests, flask_cors, os#, drop_tables
-import create_tables
+#import create_tables
 
 from base import BASE
 from stats import Stats
@@ -17,8 +17,8 @@ from apscheduler.schedulers.background import BackgroundScheduler
 
 
 #drop_tables
-if not create_tables:
-    create_tables
+#if not create_tables:
+#    create_tables
 if not os.path.exists('data'):
     os.makedirs('data')
 
