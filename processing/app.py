@@ -1,4 +1,4 @@
-import yaml, json, connexion, logging.config, logging, sys, swagger_ui_bundle, requests, flask_cors#, drop_tables
+import yaml, json, connexion, logging.config, logging, sys, swagger_ui_bundle, requests, flask_cors, os#, drop_tables
 #import create_tables
 
 from base import BASE
@@ -18,6 +18,8 @@ from apscheduler.schedulers.background import BackgroundScheduler
 
 #drop_tables
 #create_tables
+if not os.path.exists('data'):
+    os.makedirs('data')
 
 with open('app_conf.yaml', 'r') as f:
     app_config = yaml.safe_load(f.read())

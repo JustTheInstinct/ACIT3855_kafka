@@ -80,6 +80,7 @@ services:
     volumes:
       - my-db:/var/lib/sqlite
       - /home/azureuser/logs:/logs
+      - processing-db:/data
 
   audit_log: 
     image: audit_log 
@@ -100,3 +101,4 @@ services:
 # Names our volume 
 volumes:
   my-db:
+  processing-db:
