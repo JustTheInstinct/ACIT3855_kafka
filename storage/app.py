@@ -27,6 +27,14 @@ logger = logging.getLogger('basicLogger')
 logger.info("Connecting to kafka1.eastus2.cloudapp.azure.com on Port 3306")
 logger.setLevel(logging.DEBUG)
 
+if "TARGET_ENV" in os.environ and os.environ["TARGET_ENV"] == "test":
+    print("In Test Environment")
+    app_conf_file = "/config/storage/app_conf.yaml"
+    log_conf_file = "/config/storage/log_conf.yaml"
+else:
+    print("In Dev Environment")
+    app_conf_file = "app_conf.yaml"
+    log_conf_file = "log_conf.yaml"
 
 #drop_tables_mysql
 #create_database_mysql
@@ -158,7 +166,7 @@ def retry():
         except:
             logger.error("Connection Terminated. Retrying...")
             time.sleep(app_config['retries']['sleep'])
-        retry_num += 1
+            retry_num += 1
     return topic
 
 app = connexion.FlaskApp(__name__, specification_dir='')

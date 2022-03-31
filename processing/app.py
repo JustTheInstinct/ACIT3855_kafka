@@ -14,7 +14,14 @@ from connexion import NoContent
 from logging.config import dictConfig
 from apscheduler.schedulers.background import BackgroundScheduler
 
-
+if "TARGET_ENV" in os.environ and os.environ["TARGET_ENV"] == "test":
+    print("In Test Environment")
+    app_conf_file = "/config/processing/app_conf.yaml"
+    log_conf_file = "/config/processing/log_conf.yaml"
+else:
+    print("In Dev Environment")
+    app_conf_file = "app_conf.yaml"
+    log_conf_file = "log_conf.yaml"
 
 #drop_tables
 #if not create_tables:

@@ -11,6 +11,15 @@ from pykafka import KafkaClient
 from pykafka.common import OffsetType
 from threading import Thread
 
+if "TARGET_ENV" in os.environ and os.environ["TARGET_ENV"] == "test":
+    print("In Test Environment")
+    app_conf_file = "/config/audit_log/app_conf.yaml"
+    log_conf_file = "/config/audit_log/log_conf.yaml"
+else:
+    print("In Dev Environment")
+    app_conf_file = "app_conf.yaml"
+    log_conf_file = "log_conf.yaml"
+
 logger = logging.getLogger('basicLogger')
 logger.setLevel(logging.INFO)
 

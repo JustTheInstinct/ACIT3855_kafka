@@ -17,6 +17,7 @@ else:
     print("In Dev Environment")
     app_conf_file = "app_conf.yaml"
     log_conf_file = "log_conf.yaml"
+
 with open(app_conf_file, 'r') as f:
     app_config = yaml.safe_load(f.read())
 # External Logging Configuration
@@ -102,7 +103,7 @@ def retry():
         except:
             logger.error("Connection Terminated. Retrying...")
             time.sleep(app_config['retries']['sleep'])
-        retry_num += 1
+            retry_num += 1
     return topic
 
 app = connexion.FlaskApp(__name__, specification_dir='')
