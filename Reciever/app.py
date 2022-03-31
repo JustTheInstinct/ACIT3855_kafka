@@ -11,8 +11,8 @@ from pykafka import KafkaClient
 
 if "TARGET_ENV" in os.environ and os.environ["TARGET_ENV"] == "test":
     print("In Test Environment")
-    app_conf_file = "/home/azureuser/config/receiver/app_conf.yaml"
-    log_conf_file = "/home/azureuser/config/receiver/log_conf.yaml"
+    app_conf_file = "/receiver/app_conf.yaml"
+    log_conf_file = "/receiver/log_conf.yaml"
 else:
     print("In Dev Environment")
     app_conf_file = "app_conf.yaml"
