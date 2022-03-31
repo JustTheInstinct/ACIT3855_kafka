@@ -47,14 +47,14 @@ def populate_stats():
     num_positive = randint(0,num_of_ratings)
     num_negative = num_of_ratings - num_positive
 
-    data = requests.get('http://kafka1.eastus2.cloudapp.azure.com:8090/create', params={'timestamp':"1999-02-20"})
+    data = requests.get('http://kafka1.eastus2.cloudapp.azure.com:8090/create' + "&end_time=", params={'timestamp':"1999-02-20"})
     if data.ok:
         logger.info(f"{data} received on reviews")
     else:
         logger.error(f"{data} received on rate")
         return 404
 
-    data2 = requests.get('http://kafka1.eastus2.cloudapp.azure.com:8090/rate', params={'timestamp':"1999-02-20"})
+    data2 = requests.get('http://kafka1.eastus2.cloudapp.azure.com:8090/rate' + '&end_time=', params={'timestamp':"1999-02-20"})
     if data.ok:
         logger.info(f"{data2} received on rate")
     else:

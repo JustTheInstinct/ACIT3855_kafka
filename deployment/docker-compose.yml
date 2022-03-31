@@ -27,8 +27,6 @@ services:
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_LOG_DIRS: /kafka/kafka-logs
       KAFKA_BROKER_ID: 1
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
     depends_on: 
       - "zookeeper" 
   db: 
@@ -44,7 +42,7 @@ services:
       MYSQL_ROOT_PASSWORD: 'password' 
     ports: 
       # <Port exposed> : < MySQL Port running inside container> 
-      - '3306:3306' 
+      - '3306:3306'
     expose: 
       # Opens port 3306 on the container 
       - '3306' 

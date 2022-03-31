@@ -1,4 +1,5 @@
 #from httpx import request
+from operator import and_
 import yaml, json, connexion, logging.config, logging, sys, pykafka#, drop_tables_mysql
 #import create_database_mysql
 
@@ -7,7 +8,7 @@ from reviews import Review
 from rating import Rating
 
 from random import randint
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, and_
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 from datetime import datetime
@@ -51,12 +52,13 @@ def create_review(body):
 
     return NoContent, 201
 
-def get_review(timestamp):
+def get_review(timestamp, end):
     session = SESSION()
 
     timestamp_date = timestamp
+    end_date = datetime.strftime(end, "%Y-%m-%dT%H:%M:%S")
 
-    reviews = session.query(Review).filter(Review.timestamp >= timestamp_date)
+    reviews = session.query(Review).filter(and_(Review.timestamp >= timestamp_date, Review.timestamp < end_date))
 
     review_list = []
 
@@ -86,12 +88,13 @@ def rate(body):
 
     return NoContent, 201
 
-def get_rating(timestamp):
+def get_rating(timestamp, end):
     session = SESSION()
 
     timestamp_date = timestamp
+    end_date = datetime.strftime(end, "%Y-%m-%dT%H:%M:%S")
 
-    ratings = session.query(Rating).filter(Rating.timestamp >= timestamp_date)
+    ratings = session.query(Rating).filter(and_(Rating.timestamp >= timestamp_date, Rating.timestamp < end_date))
 
     rating_list = []
 
