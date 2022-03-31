@@ -163,6 +163,7 @@ def retry():
                                 app_config["events"]["port"]) 
             client = KafkaClient(hosts=hostname)
             topic = client.topics[str.encode(app_config["events"]["topic"])]
+            retry_num = 9001
         except:
             logger.error("Connection Terminated. Retrying...")
             time.sleep(app_config['retries']['sleep'])
