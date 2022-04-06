@@ -28,6 +28,18 @@ paths:
                 properties:
                   message:
                     type: string
+  /health:
+    get:
+      tags:
+        - devices
+      summary: checks health of API
+      operationId: app.get_health
+      description: Checks service health
+      responses:
+        '200':
+          description: Sucessful Health Checks
+        '400':
+          description: bad health request
 
 components:
   schemas:
