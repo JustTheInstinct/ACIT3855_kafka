@@ -5,3 +5,9 @@ scheduler:
   period_sec: 20
 eventstore: 
   url: http://localhost:8120
+events:
+  hostname: kafka1.eastus2.cloudapp.azure.com
+  port1: 8090 # Storage
+  port2: 8110 # Audit
+  port3: 8100 # Processing
+  port4: 8080 # Receiver

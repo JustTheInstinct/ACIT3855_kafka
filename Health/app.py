@@ -42,21 +42,20 @@ logger.setLevel(logging.DEBUG)
 def check_health():
     retry_num = 1
     max_retry = 5
-    while retry_num <= max_retry:
+    service_dict = {"port1":"storage", "port2":"audit", "port3":"processing", "port4":"", "port5":""}
+    for each in service_dict:
         
-        logger.info(f"Attempting to connect to: {retry_num} out of {max_retry} retries")
+        logger.info(f"Attempting to connect to {service_dict[each].value} service")
         
         try:
             hostname = "%s:%d" % (app_config["events"]["hostname"],   
                                 app_config["events"]["port"]) 
-            client = KafkaClient(hosts=hostname)
-            topic = client.topics[str.encode(app_config["events"]["topic"])]
+
             retry_num = 9001
         except:
             logger.error("Connection Terminated. Retrying...")
             time.sleep(1)
             retry_num += 1
-    return topic
 
 def init_scheduler():
     sch = BackgroundScheduler(daemon=True)
@@ -77,4 +76,4 @@ if __name__ == "__main__":
     # Load log config
     
     init_scheduler()
-    app.run(port=8100, use_reloader=False)
+    app.run(port=8120, use_reloader=False)
