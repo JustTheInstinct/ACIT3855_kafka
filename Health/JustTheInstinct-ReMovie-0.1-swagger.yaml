@@ -1,0 +1,19 @@
+openapi: 3.0.0
+info:
+  description: Health
+  version: '0.1'
+  title: ReMovie API
+
+paths:
+  /health:
+    get:
+      tags:
+        - devices
+      summary: checks health of API
+      operationId: app.get_health
+      description: Checks service health
+      responses:
+        '200':
+          description: Sucessful Health Checks
+        '400':
+          description: bad health request

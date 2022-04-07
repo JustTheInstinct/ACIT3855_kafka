@@ -10,7 +10,7 @@ from connexion import NoContent
 from logging.config import dictConfig
 from pykafka import KafkaClient
 
-if "TARGET_ENV" in os.environ and os.environ["TARGET_ENV"] == "test":
+if ("TARGET_ENV" in os.environ and os.environ["TARGET_ENV"] == "test") and os.path.exists('/config'):
     print("In Test Environment")
     app_conf_file = "/config/app_conf.yaml"
     log_conf_file = "/config/log_conf.yaml"
@@ -18,6 +18,9 @@ else:
     print("In Dev Environment")
     app_conf_file = "app_conf.yaml"
     log_conf_file = "log_conf.yaml"
+
+app_conf_file = "app_conf.yaml"
+log_conf_file = "log_conf.yaml"
 
 with open(app_conf_file, 'r') as f:
     app_config = yaml.safe_load(f.read())
@@ -107,6 +110,9 @@ def retry():
             time.sleep(app_config['retries']['sleep'])
             retry_num += 1
     return topic
+
+def get_health():
+    pass
 
 app = connexion.FlaskApp(__name__, specification_dir='')
 

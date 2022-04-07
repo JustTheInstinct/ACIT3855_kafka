@@ -27,7 +27,7 @@ logger = logging.getLogger('basicLogger')
 logger.info("Connecting to kafka1.eastus2.cloudapp.azure.com on Port 3306")
 logger.setLevel(logging.DEBUG)
 
-if "TARGET_ENV" in os.environ and os.environ["TARGET_ENV"] == "test":
+if ("TARGET_ENV" in os.environ and os.environ["TARGET_ENV"] == "test") and os.path.exists('/config'):
     print("In Test Environment")
     app_conf_file = "/config/app_conf.yaml"
     log_conf_file = "/config/log_conf.yaml"
@@ -173,6 +173,9 @@ def retry():
             time.sleep(app_config['retries']['sleep'])
             retry_num += 1
     return topic
+
+def get_health():
+    pass
 
 app = connexion.FlaskApp(__name__, specification_dir='')
 

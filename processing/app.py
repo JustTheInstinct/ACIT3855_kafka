@@ -16,7 +16,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 
 
 
-if "TARGET_ENV" in os.environ and os.environ["TARGET_ENV"] == "test":
+if ("TARGET_ENV" in os.environ and os.environ["TARGET_ENV"] == "test") and os.path.exists('/config'):
     print("In Test Environment")
     app_conf_file = "/config/processing/app_conf.yaml"
     log_conf_file = "/config/processing/log_conf.yaml"
@@ -36,7 +36,7 @@ logger = logging.getLogger('basicLogger')
 logger.setLevel(logging.DEBUG)
 
 
-if not os.isfile(app_config["datastore"]["filename"]):
+if not os.path.isfile(app_config["datastore"]["filename"]):
     # code for creating the database
     connection = sqlite3.connect(app_config["datastore"]["filename"])
     c = connection.cursor()
@@ -124,6 +124,9 @@ def get_stats():
     session.close()
 
     return stats.to_dict(), 201
+
+def get_health():
+    pass
 
 app = connexion.FlaskApp(__name__, specification_dir='')
 CORS(app.app)

@@ -53,6 +53,7 @@ paths:
             schema:
               $ref: '#/components/schemas/AddRate'
         description: Reads item to add
+
   /health:
     get:
       tags:

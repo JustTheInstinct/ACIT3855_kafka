@@ -11,7 +11,7 @@ from pykafka import KafkaClient
 from pykafka.common import OffsetType
 from threading import Thread
 
-if "TARGET_ENV" in os.environ and os.environ["TARGET_ENV"] == "test":
+if ("TARGET_ENV" in os.environ and os.environ["TARGET_ENV"] == "test") and os.path.exists('/config'):
     print("In Test Environment")
     app_conf_file = "/config/app_conf.yaml"
     log_conf_file = "/config/log_conf.yaml"
@@ -84,6 +84,9 @@ def get_rating(index=0):
     logger.error("No reviews at index: %d" % index)
     
     return {"message": "Not Found"}, 404
+
+def get_health():
+    pass
 
 app = connexion.FlaskApp(__name__, specification_dir='')
 CORS(app.app)
