@@ -39,34 +39,6 @@ with open(log_conf_file, 'r') as f:
 logger = logging.getLogger('basicLogger')
 logger.setLevel(logging.DEBUG)
 
-
-# if not os.path.isfile(app_config["datastore"]["filename"]):
-#     # code for creating the database
-#     connection = sqlite3.connect(app_config["datastore"]["filename"])
-#     c = connection.cursor()
-
-#     c.execute("""
-#                 CREATE TABLE stats
-#                 (
-#                 id INTEGER PRIMARY KEY ASC NOT NULL,
-#                 num_of_ratings INTEGER NOT NULL,
-#                 num_positive INTEGER,
-#                 num_negative INTEGER,
-#                 timestamp VARCHAR(100) NOT NULL,
-#                 trace_id INTEGER
-#                 )
-#             """)
-
-#     connection.commit()
-#     connection.close()
-
-# ENGINE = create_engine("sqlite:///%s" % app_config["datastore"]["filename"])
-# BASE.metadata.bind = ENGINE
-# SESSION = sessionmaker(bind=ENGINE)
-
-
-# Functions to handle database things
-
 def check_health():
     retry_num = 1
     max_retry = 5
@@ -91,20 +63,8 @@ def init_scheduler():
     sch.add_job(check_health, 'interval', seconds=app_config['scheduler']['period_sec'])
     sch.start()
 
-# def get_stats():
-#     session = SESSION()
-    
-#     try:
-#         stats = session.query(Stats).order_by(Stats.timestamp.desc()).first()
-#     except:
-#         return NoContent, 400
-
-#     session.close()
-
-#     return stats.to_dict(), 201
-
 def get_health():
-    pass
+    check_health
 
 app = connexion.FlaskApp(__name__, specification_dir='')
 CORS(app.app)
