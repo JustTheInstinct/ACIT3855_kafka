@@ -1,3 +1,4 @@
+from httpx import request
 import yaml, json, connexion, logging.config, logging, sys, swagger_ui_bundle, requests, flask_cors, os, sqlite3, time#, drop_tables
 #import create_tables
 
@@ -42,20 +43,19 @@ logger.setLevel(logging.DEBUG)
 def check_health():
     retry_num = 1
     max_retry = 5
-    service_dict = {"port1":"storage", "port2":"audit", "port3":"processing", "port4":"", "port5":""}
+    service_dict = {"port1":"storage", "port2":"audit", "port3":"processing", "port4":"receiver"}
     for each in service_dict:
-        
-        logger.info(f"Attempting to connect to {service_dict[each].value} service")
-        
-        try:
-            hostname = "%s:%d" % (app_config["events"]["hostname"],   
-                                app_config["events"]["port"]) 
+        while retry_num <= max_retry:
+            logger.info(f"Attempting to connect to {service_dict[each].value} service")
+            
+            try:
+                requests.get(f"http://kafka1.eastus2.cloudapp.azure.com:{service_dict[each].keys}/rate")
 
-            retry_num = 9001
-        except:
-            logger.error("Connection Terminated. Retrying...")
-            time.sleep(1)
-            retry_num += 1
+                logger.info("Connection Established. Retrying...")
+                retry_num = 9001
+            except:
+                time.sleep(1)
+                retry_num += 1
 
 def init_scheduler():
     sch = BackgroundScheduler(daemon=True)
