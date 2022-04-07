@@ -27,7 +27,7 @@ logger = logging.getLogger('basicLogger')
 logger.info("Connecting to kafka1.eastus2.cloudapp.azure.com on Port 3306")
 logger.setLevel(logging.DEBUG)
 
-if ("TARGET_ENV" in os.environ and os.environ["TARGET_ENV"] == "test") and os.path.exists('/config'):
+if "TARGET_ENV" in os.environ and os.environ["TARGET_ENV"] == "test":
     print("In Test Environment")
     app_conf_file = "/config/app_conf.yaml"
     log_conf_file = "/config/log_conf.yaml"

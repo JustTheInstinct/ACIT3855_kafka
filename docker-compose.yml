@@ -65,6 +65,8 @@ services:
 
   storage: 
     build: storage 
+    environment:
+      - TARGET_ENV=test
     ports: 
       - "8090:8090" 
     volumes:
@@ -74,7 +76,9 @@ services:
       - "kafka"
        
   processing: 
-    build: processing 
+    build: processing
+    environment:
+      - TARGET_ENV=test
     network_mode: host
     depends_on: 
       - "storage"
@@ -86,6 +90,8 @@ services:
 
   audit_log: 
     build: Audit
+    environment:
+      - TARGET_ENV=test
     ports: 
       - "8110:8110"
     depends_on: 
@@ -104,10 +110,15 @@ services:
 
   health:
     build: Health
+    environment:
+      - TARGET_ENV=test
     ports:
       - "8120:8120"
     depends_on:
       - "kafka"
+    volumes:
+      - /home/azureuser/logs:/logs
+      - /home/azureuser/config/health:/config
 # Names our volume 
 volumes:
   my-db:

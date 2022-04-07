@@ -18,17 +18,14 @@ from apscheduler.schedulers.background import BackgroundScheduler
 
 
 
-# if ("TARGET_ENV" in os.environ and os.environ["TARGET_ENV"] == "test") and os.path.exists('/config'):
-#     print("In Test Environment")
-#     app_conf_file = "/config/processing/app_conf.yaml"
-#     log_conf_file = "/config/processing/log_conf.yaml"
-# else:
-#     print("In Dev Environment")
-#     app_conf_file = "app_conf.yaml"
-#     log_conf_file = "log_conf.yaml"
-
-app_conf_file = "app_conf.yaml"
-log_conf_file = "log_conf.yaml"
+if "TARGET_ENV" in os.environ and os.environ["TARGET_ENV"] == "test":
+    print("In Test Environment")
+    app_conf_file = "/config/processing/app_conf.yaml"
+    log_conf_file = "/config/processing/log_conf.yaml"
+else:
+    print("In Dev Environment")
+    app_conf_file = "app_conf.yaml"
+    log_conf_file = "log_conf.yaml"
 
 with open(app_conf_file, 'r') as f:
     app_config = yaml.safe_load(f.read())
