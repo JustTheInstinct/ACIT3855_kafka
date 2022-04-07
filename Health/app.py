@@ -1,4 +1,4 @@
-from httpx import request
+
 import yaml, json, connexion, logging.config, logging, sys, swagger_ui_bundle, requests, flask_cors, os, sqlite3, time#, drop_tables
 #import create_tables
 
