@@ -116,7 +116,7 @@ def get_health():
 
 app = connexion.FlaskApp(__name__, specification_dir='')
 
-app.add_api("JustTheInstinct-ReMovie-0.1-swagger.yaml", strict_validation=True, validate_responses=True)
+app.add_api("JustTheInstinct-ReMovie-0.1-swagger.yaml", base_path="/receiver", strict_validation=True, validate_responses=True)
 
 if __name__ == "__main__":
     # Load endpoint config
