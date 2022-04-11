@@ -84,7 +84,7 @@ def get_review(timestamp):
         review_list.append(review.to_dict())
     session.close()
 
-    logger.info("Query REVIEW after %s returns %d items" % (timestamp, len(review_list)))
+    logger.info("Query REVIEW after %s returns %d items" % (timestamp_date, len(review_list)))
     logger.info("Connected to kafka1.eastus2.cloudapp.azure.com on Port 3306")
     return review_list, 200
 
@@ -124,7 +124,7 @@ def get_rating(timestamp):
         rating_list.append(rating.to_dict())
     session.close()
 
-    logger.info("Query RATING after %s returns %d items" % (timestamp, len(rating_list)))
+    logger.info("Query RATING after %s returns %d items" % (timestamp_date, len(rating_list)))
     logger.info("Connected to kafka1.eastus2.cloudapp.azure.com on Port 3306")
     return rating_list, 200
 
