@@ -64,7 +64,7 @@ def create_review(body):
     session.commit()
     session.close()
 
-    return NoContent, 201
+    # return NoContent, 201
 
 def get_review(timestamp):
     session = SESSION()
@@ -100,7 +100,7 @@ def rate(body):
     session.commit()
     session.close()
 
-    return NoContent, 201
+    # return NoContent, 201
 
 def get_rating(timestamp):
     session = SESSION()
@@ -122,10 +122,9 @@ def get_rating(timestamp):
 
 def process_messages(): 
     """ Process event messages """
-    create_review
-    rate
+    # create_review
+    # rate
     
-
     # hostname = "%s:%d" % (app_config["events"]["hostname"],   
     #                       app_config["events"]["port"]) 
     topic = retry()
@@ -167,12 +166,11 @@ def retry():
                                 app_config["events"]["port"]) 
             client = KafkaClient(hosts=hostname)
             topic = client.topics[str.encode(app_config["events"]["topic"])]
-            retry_num = 9001
+            return topic
         except:
             logger.error("Connection Terminated. Retrying...")
             time.sleep(app_config['retries']['sleep'])
             retry_num += 1
-    return topic
 
 def get_health():
     pass
