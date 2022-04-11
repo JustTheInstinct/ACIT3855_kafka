@@ -4,6 +4,7 @@ datastore:
   password: password
   hostname: kafka1.eastus2.cloudapp.azure.com
   port: 3306
+  database: events
 events: 
   hostname: kafka1.eastus2.cloudapp.azure.com
   port: 9092 
