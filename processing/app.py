@@ -46,17 +46,17 @@ if not os.path.isfile(app_config["datastore"]["filename"]):
                 (
                 id INTEGER PRIMARY KEY ASC NOT NULL,
                 num_of_ratings INTEGER NOT NULL,
-                num_positive INTEGER,
-                num_negative INTEGER,
-                timestamp VARCHAR(100) NOT NULL,
-                trace_id INTEGER
+                num_of_reviews INTEGER NOT NULL,
+                num_positive INTEGER NOT NULL,
+                num_negative INTEGER NOT NULL,
+                timestamp VARCHAR(100) NOT NULL
                 )
             """)
 
     connection.commit()
     connection.close()
 
-ENGINE = create_engine("sqlite:///%s" % app_config["datastore"]["filename"])
+ENGINE = create_engine("sqlite:////%s" % app_config["datastore"]["filename"])
 BASE.metadata.bind = ENGINE
 SESSION = sessionmaker(bind=ENGINE)
 
@@ -67,46 +67,51 @@ num_of_ratings = 0
 def populate_stats():
     global num_of_ratings
     logger.info("Periodic Processing Begin")
-    trace_id = randint(0,9999999)
-    session = SESSION()
+    try:
+        session = SESSION()
 
-    var = session.query(Stats).order_by(Stats.timestamp.desc()).first()
-    logger.info(var.num_of_ratings)
+        var = session.query(Stats).order_by(Stats.timestamp.desc()).first()
+        session.close()
+        stats = var.to_dict()
+    except:
+        stats = {"num_of_ratings":0, "num_of_reviews":0, "num_positive":0, "num_negative":0, "timestamp":datetime.now()}
+    logger.info(stats)
 
-    timestamp = datetime.now()
+    # timestamp = datetime.now()
 
-    # Calculations for incremental values.
-    num_of_ratings += var.num_of_ratings
-    num_of_ratings = 1000 # HARD CODED FOR TESTING
-    num_positive = randint(0,num_of_ratings)
-    num_negative = num_of_ratings - num_positive
+    # # Calculations for incremental values.
+    # #num_of_ratings += var.num_of_ratings
+    # num_of_ratings = stats["num_of_ratings"] # HARD CODED FOR TESTING
+    # num_positive = randint(0,num_of_ratings)
+    # num_negative = num_of_ratings - num_positive
 
-    data = requests.get(f'{app_config["eventstore"]["url"]}/create', params={'timestamp':"1999-02-20"})
-    if data.ok:
+    data = requests.get(f'{app_config["eventstore"]["url"]}/create', params=stats["timestamp"])
+    if data.status_code == 200 and len(data.json()) > 0:
         logger.info(f"{data} received on reviews")
-    else:
-        logger.error(f"{data} received on rate")
-        return 404
+        stats["num_of_reviews"] += len(data.json())
+    # else:
+    #     logger.error(f"{data} received on reviews")
+    #     return 404
 
-    data2 = requests.get(f'{app_config["eventstore"]["url"]}/rate', params={'timestamp':"1999-02-20"})
-    if data.ok:
-        logger.info(f"{data2} received on rate")
-    else:
-        logger.error(f"{data2} received on rate")
-        return 404
+    data = requests.get(f'{app_config["eventstore"]["url"]}/rate', params=stats["timestamp"])
+    if data.status_code == 200 and len(data.json()) > 0:
+        logger.info(f"{data} received on ratings")
+        stats["num_of_ratings"] += len(data.json())
+    # else:
+    #     logger.error(f"{data2} received on rate")
+    #     return 404
 
     data = Stats(
-        num_of_ratings,
-        num_positive,
-        num_negative,
-        timestamp,
-        trace_id)
+        stats["num_of_ratings"],
+        stats["num_of_reviews"],
+        stats["num_positive"],
+        stats["num_negative"]
+        )
 
     logger.info("Periodic Processing End")
     session.add(data)
     session.commit()
     session.close()
-    pass
 
 def init_scheduler():
     sch = BackgroundScheduler(daemon=True)
@@ -114,16 +119,14 @@ def init_scheduler():
     sch.start()
 
 def get_stats():
-    session = SESSION()
-    
     try:
+        session = SESSION()
         stats = session.query(Stats).order_by(Stats.timestamp.desc()).first()
+        session.close()
+        return stats.to_dict(), 201
     except:
-        return NoContent, 400
-
-    session.close()
-
-    return stats.to_dict(), 201
+        stats = {"num_of_ratings":0, "num_of_reviews":0, "num_positive":0, "num_negative":0, "timestamp":datetime.now()}
+        return stats, 201
 
 def get_health():
     pass
