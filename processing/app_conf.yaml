@@ -4,4 +4,4 @@ datastore:
 scheduler: 
   period_sec: 5 
 eventstore: 
-  url: http://localhost:8090 
+  url: http://kafka1.eastus2.cloudapp.azure.com/storage
