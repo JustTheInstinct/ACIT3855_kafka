@@ -76,8 +76,8 @@ def populate_stats():
     except:
         stats = {"num_of_ratings":0, "num_of_reviews":0, "num_positive":0, "num_negative":0, "timestamp":datetime.now()}
     logger.info(stats)
-    #timestamp = datetime.strftime(stats["timestamp"], "%Y-%m-%dT%H:%M:%S")
-    timestamp = datetime.strptime(stats["timestamp"], "%Y-%m-%dT%H:%M:%S")
+    timestamp = datetime.strftime(stats["timestamp"], "%Y-%m-%dT%H:%M:%S")
+    #timestamp = datetime.strptime(stats["timestamp"], "%Y-%m-%dT%H:%M:%S")
     # timestamp = datetime.now()
 
     # # Calculations for incremental values.
