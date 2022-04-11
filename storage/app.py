@@ -141,13 +141,13 @@ def process_messages():
         logger.info(f"MESSAGE AFTER PAYLOAD -------------------- {payload}")
         if msg["type"] == "review": # Change this to your event type 
             # Store the event1 (i.e., the payload) to the DB 
-            logger.info(f"MESSAGE AFTER REVIEW ================== {payload}")
             create_review(payload)
+            logger.info(f"MESSAGE AFTER REVIEW ================== {payload}")
         elif msg["type"] == "rating": # Change this to your event type 
             # Store the event2 (i.e., the payload) to the DB 
-            logger.info(f"MESSAGE AFTER RATING ++++++++++++++++++ {payload}")
             rate(payload)
- 
+            logger.info(f"MESSAGE AFTER RATING ++++++++++++++++++ {payload}")
+
         # Commit the new message as being read 
         consumer.commit_offsets() 
 
