@@ -73,8 +73,8 @@ def create_review(body):
 def get_review(timestamp):
     session = SESSION()
 
-    timestamp_date = datetime.strftime(timestamp, "%Y-%m-%dT%H:%M:%S")
-    timestamp_date = datetime.strptime(timestamp_date, "%Y-%m-%dT%H:%M:%S")
+    #timestamp_date = datetime.strftime(timestamp, "%Y-%m-%dT%H:%M:%S")
+    timestamp_date = datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%S")
     #end_date = datetime.strftime(end, "%Y-%m-%dT%H:%M:%S")
 
     reviews = session.query(Review).filter(Review.timestamp >= timestamp_date)
@@ -114,8 +114,8 @@ def rate(body):
 def get_rating(timestamp):
     session = SESSION()
 
-    timestamp_date = datetime.strftime(timestamp, "%Y-%m-%dT%H:%M:%S")
-    timestamp_date = datetime.strptime(timestamp_date, "%Y-%m-%dT%H:%M:%S")
+    #timestamp_date = datetime.strftime(timestamp, "%Y-%m-%dT%H:%M:%S")
+    timestamp_date = datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%S")
     #end_date = datetime.strftime(end, "%Y-%m-%dT%H:%M:%S")
 
     ratings = session.query(Rating).filter(Rating.timestamp >= timestamp_date)
