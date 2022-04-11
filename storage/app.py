@@ -49,8 +49,7 @@ SESSION = sessionmaker(bind=ENGINE)
 
 def create_review(body):
     session = SESSION()
-    trace_id = randint(0,sys.maxsize)
-    body['trace_id'] = trace_id
+
     logger.info(f"Stored event POST response with trace id {body['trace_id']}")
     logger.info("Connected to kafka1.eastus2.cloudapp.azure.com on Port 3306")
     data = Review(body["review_id"],
@@ -86,8 +85,7 @@ def get_review(timestamp):
 
 def rate(body):
     session = SESSION()
-    trace_id = randint(0,sys.maxsize)
-    body['trace_id'] = trace_id
+
     logger.info(f"Stored event POST response with trace id {body['trace_id']}")
     logger.info("Connected to kafka1.eastus2.cloudapp.azure.com on Port 3306")
     data = Rating(body["response_id"],
@@ -122,8 +120,6 @@ def get_rating(timestamp):
 
 def process_messages(): 
     """ Process event messages """
-    # create_review
-    # rate
     
     # hostname = "%s:%d" % (app_config["events"]["hostname"],   
     #                       app_config["events"]["port"]) 
@@ -136,18 +132,20 @@ def process_messages():
                                          auto_offset_reset=OffsetType.LATEST) 
  
     # This is blocking - it will wait for a new message 
-    for msg in consumer: 
-        msg_str = msg.value.decode('utf-8') 
+    for event in consumer: 
+        msg_str = event.value.decode('utf-8') 
         msg = json.loads(msg_str) 
         logger.info("Message: %s" % msg) 
  
         payload = msg["payload"] 
- 
+        logger.info(f"MESSAGE AFTER PAYLOAD -------------------- {payload}")
         if msg["type"] == "review": # Change this to your event type 
             # Store the event1 (i.e., the payload) to the DB 
+            logger.info(f"MESSAGE AFTER REVIEW ================== {payload}")
             create_review(payload)
         elif msg["type"] == "rating": # Change this to your event type 
             # Store the event2 (i.e., the payload) to the DB 
+            logger.info(f"MESSAGE AFTER RATING ++++++++++++++++++ {payload}")
             rate(payload)
  
         # Commit the new message as being read 
