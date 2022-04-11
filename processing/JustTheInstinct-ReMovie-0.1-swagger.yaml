@@ -46,10 +46,14 @@ components:
     ReviewStats:
       required: 
         - num_of_ratings
+        - num_of_reviews
         - num_positive
         - num_negative
       properties:
         num_of_ratings:
+          type: integer
+          example: 100
+        num_of_reviews:
           type: integer
           example: 100
         num_positive:
