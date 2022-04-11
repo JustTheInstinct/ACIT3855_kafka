@@ -1,4 +1,5 @@
 #from httpx import request
+from distutils.log import error
 from operator import and_
 from time import time
 import yaml, json, connexion, logging.config, logging, sys, pykafka, time, os#, drop_tables_mysql
@@ -48,20 +49,24 @@ SESSION = sessionmaker(bind=ENGINE)
 # Functions to handle database things=
 
 def create_review(body):
-    session = SESSION()
+    try:
+        session = SESSION()
 
-    logger.info(f"Stored event POST response with trace id {body['trace_id']}")
-    logger.info("Connected to kafka1.eastus2.cloudapp.azure.com on Port 3306")
-    data = Review(body["review_id"],
-                    body['username'],
-                    body['comment'],
-                    body['rating'],
-                    body['timestamp'],
-                    body['trace_id'])
+        logger.info(f"Stored event POST response with trace id {body['trace_id']}")
+        logger.info("Connected to kafka1.eastus2.cloudapp.azure.com on Port 3306")
+        data = Review(body["review_id"],
+                        body['username'],
+                        body['comment'],
+                        body['rating'],
+                        body['timestamp'],
+                        body['trace_id'])
 
-    session.add(data)
-    session.commit()
-    session.close()
+        session.add(data)
+        session.commit()
+        session.close()
+    except Exception as err:
+        logger.info(err)
+        raise Exception(err)
 
     # return NoContent, 201
 
@@ -84,19 +89,24 @@ def get_review(timestamp):
     return review_list, 200
 
 def rate(body):
-    session = SESSION()
+    try:
+        session = SESSION()
 
-    logger.info(f"Stored event POST response with trace id {body['trace_id']}")
-    logger.info("Connected to kafka1.eastus2.cloudapp.azure.com on Port 3306")
-    data = Rating(body["response_id"],
-                    body['user_rating'],
-                    body['rate_count'],
-                    body['timestamp'],
-                    body['trace_id'])
+        logger.info(f"Stored event POST response with trace id {body['trace_id']}")
+        logger.info("Connected to kafka1.eastus2.cloudapp.azure.com on Port 3306")
+        data = Rating(body["response_id"],
+                        body['user_rating'],
+                        body['rate_count'],
+                        body['timestamp'],
+                        body['trace_id'])
 
-    session.add(data)
-    session.commit()
-    session.close()
+        session.add(data)
+        session.commit()
+        session.close()
+    except Exception as err:
+        logger.info(err)
+        raise Exception(err)
+
 
     # return NoContent, 201
 
