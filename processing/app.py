@@ -56,7 +56,7 @@ if not os.path.isfile(app_config["datastore"]["filename"]):
     connection.commit()
     connection.close()
 
-ENGINE = create_engine("sqlite:////%s" % app_config["datastore"]["filename"])
+ENGINE = create_engine("sqlite:///%s" % app_config["datastore"]["filename"])
 BASE.metadata.bind = ENGINE
 SESSION = sessionmaker(bind=ENGINE)
 
