@@ -76,7 +76,7 @@ def populate_stats():
     except:
         stats = {"num_of_ratings":0, "num_of_reviews":0, "num_positive":0, "num_negative":0, "timestamp":datetime.now()}
     logger.info(stats)
-
+    timestamp = datetime.strftime(stats["timestamp"], "%Y-%m-%dT%H:%M:%S")
     # timestamp = datetime.now()
 
     # # Calculations for incremental values.
@@ -85,7 +85,7 @@ def populate_stats():
     # num_positive = randint(0,num_of_ratings)
     # num_negative = num_of_ratings - num_positive
 
-    data = requests.get(f'{app_config["eventstore"]["url"]}/create', params=stats["timestamp"])
+    data = requests.get(f'{app_config["eventstore"]["url"]}/create', params={"timestamp":timestamp})
     if data.status_code == 200 and len(data.json()) > 0:
         logger.info(f"{data} received on reviews")
         stats["num_of_reviews"] += len(data.json())
@@ -93,7 +93,7 @@ def populate_stats():
     #     logger.error(f"{data} received on reviews")
     #     return 404
 
-    data = requests.get(f'{app_config["eventstore"]["url"]}/rate', params=stats["timestamp"])
+    data = requests.get(f'{app_config["eventstore"]["url"]}/rate', params={"timestamp":timestamp})
     if data.status_code == 200 and len(data.json()) > 0:
         logger.info(f"{data} received on ratings")
         stats["num_of_ratings"] += len(data.json())
