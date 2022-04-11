@@ -81,14 +81,14 @@ def populate_stats():
     num_positive = randint(0,num_of_ratings)
     num_negative = num_of_ratings - num_positive
 
-    data = requests.get(f'{app_config["eventstore"]["url"]}/create' + "&end_time=", params={'timestamp':"1999-02-20"})
+    data = requests.get(f'{app_config["eventstore"]["url"]}/create', params={'timestamp':"1999-02-20"})
     if data.ok:
         logger.info(f"{data} received on reviews")
     else:
         logger.error(f"{data} received on rate")
         return 404
 
-    data2 = requests.get(f'{app_config["eventstore"]["url"]}/rate' + '&end_time=', params={'timestamp':"1999-02-20"})
+    data2 = requests.get(f'{app_config["eventstore"]["url"]}/rate', params={'timestamp':"1999-02-20"})
     if data.ok:
         logger.info(f"{data2} received on rate")
     else:
