@@ -65,7 +65,7 @@ def create_review(body):
         session.commit()
         session.close()
     except Exception as err:
-        logger.info(err)
+        logger.error(err)
         raise Exception(err)
 
     # return NoContent, 201
@@ -104,7 +104,7 @@ def rate(body):
         session.commit()
         session.close()
     except Exception as err:
-        logger.info(err)
+        logger.error(err)
         raise Exception(err)
 
 

@@ -48,7 +48,7 @@ with open('log_conf.yaml', 'r') as f:
 logger = logging.getLogger('basicLogger')
 
 def create_review(body):
-    trace_id = randint(0,sys.maxsize)
+    trace_id = randint(0,100000)
     body['trace_id'] = trace_id
 
     topic = retry()
@@ -70,7 +70,7 @@ def create_review(body):
     return NoContent, 200
 
 def rate(body):
-    trace_id = randint(0,sys.maxsize)
+    trace_id = randint(0,100000)
     body['trace_id'] = trace_id
 
     topic = retry()
