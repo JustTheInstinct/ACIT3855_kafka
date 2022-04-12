@@ -18,6 +18,7 @@ export default function AppStats() {
                 setError(error)
                 setIsLoaded(true);
             })
+        console.log(stats)
     }
     useEffect(() => {
 		const interval = setInterval(() => getStats(), 2000); // Update every 2 seconds
@@ -35,8 +36,8 @@ export default function AppStats() {
                 <table className={"StatsTable"}>
 					<tbody>
 						<tr>
-							<th>Blood Pressure</th>
-							<th>Heart Rate</th>
+							<th>Reviews</th>
+							<th>Ratings</th>
 						</tr>
 						<tr>
 							<td># Reviews: {stats['review']}</td>
