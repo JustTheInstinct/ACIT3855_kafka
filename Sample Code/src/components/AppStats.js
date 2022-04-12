@@ -40,8 +40,8 @@ export default function AppStats() {
 							<th>Ratings</th>
 						</tr>
 						<tr>
-							<td># Reviews: {stats['num_negative']}</td>
-							<td># Ratings: {stats['num_positive']}</td>
+							<td># Reviews: {stats['num_of_reviews']}</td>
+							<td># Ratings: {stats['num_of_ratings']}</td>
 						</tr>
 						{/* <tr>
 							<td colspan="2">Max BP Systolic: {stats['max_bp_sys_reading']}</td>
@@ -54,7 +54,7 @@ export default function AppStats() {
 						</tr> */}
 					</tbody>
                 </table>
-                <h3>Last Updated: {stats['last_updated']}</h3>
+                <h3>Last Updated: {stats['timestamp']}</h3>
 
             </div>
         )
